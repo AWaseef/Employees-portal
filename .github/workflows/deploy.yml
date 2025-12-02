@@ -1,0 +1,33 @@
+name: Deploy QuickPickups Employees Portal
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: npm install
+      - run: npm run build
+
+      - name: Determine Folder
+        id: env
+        run: |
+          if [[ "${GITHUB_REF##*/}" == "main" ]]; then
+            echo "FOLDER=production" >> $GITHUB_OUTPUT
+          else
+            echo "FOLDER=development" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload build
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "build/*"
+          target: "/home/projects/quickpickups/frontend-employees-portal/${{ steps.env.outputs.FOLDER }}/build"
