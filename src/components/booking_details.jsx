@@ -24,9 +24,6 @@ export default function BookingDetails({ bookingID, role }) {
   const rideDict = useTranslations("pick");
   const statusrideDict = useTranslations("status");
 
-  /* =====================================================
-     🚀 LOAD DATA (OPTIMIZADO)
-  ===================================================== */
   useEffect(() => {
 
     const loadData = async () => {
@@ -66,12 +63,8 @@ export default function BookingDetails({ bookingID, role }) {
 
     loadData();
 
-  }, [bookingID, router]); // 🔥 importante para Next/Prev
+  }, [bookingID, router]);
 
-
-  /* =====================================================
-     🎯 STATUS UI
-  ===================================================== */
   const getStatusVariant = (status) => {
     switch (status?.toLowerCase()) {
       case "pending": return "secondary"
@@ -93,9 +86,6 @@ export default function BookingDetails({ bookingID, role }) {
   }
 
 
-  /* =====================================================
-     🚀 GET SINGLE RIDE (OPTIMIZADO)
-  ===================================================== */
   const getRide = useCallback(async (e) => {
 
     const id = e.target.id;
